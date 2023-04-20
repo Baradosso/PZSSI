@@ -1,0 +1,107 @@
+<%- include('./shared/header.ejs') %>
+
+<h1 class="display-4">Zbiór książek</h1>
+ 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModalTarget" style="margin-bottom: 10px;">
+    Dodaj książkę
+</button>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% viewBooks.forEach(function(book) { %>
+            <tr>
+                <td><%= book.title %></td>
+                <td><%= book.author %></td>
+                <td>
+                    <form action="/del/" method="post">
+                        <input id="title<%= book._id %>" type="hidden" value="<%= book.title %>">
+                        <input id="author<%= book._id %>" type="hidden" value="<%= book.author %>">
+                        <button type="button" class="edit-book-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookModalTarget" value="<%= book._id %>">
+                            Edytuj
+                        </button>
+                        <input name="delBookId" type="hidden" value="<%= book._id %>">
+                        <input class="btn btn-danger" type="submit" value="Usuń">
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<%- include('./shared/footer.ejs') %>
+
+<!-- Modal add book button  -->
+<div class="modal fade" id="addBookModalTarget" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="/add/" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Dodaj książkę</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row" style="margin-bottom: 10px;">
+                        <label class="col-sm-2 col-form-label" for="addBookTitle">Tytuł: </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="addBookTitle" placeholder="Tytuł..." >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="addBookAuthor">Autor: </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="addBookAuthor" placeholder="Autor...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    <input type="submit" class="btn btn-primary" value="Dodaj książkę">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal edit book button  -->
+<div class="modal fade" id="editBookModalTarget" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="/edit/" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edycja książki</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row" style="margin-bottom: 10px;">
+                        <label class="col-sm-2 col-form-label" for="editBookTitle">Tytuł: </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="editBookTitle" id="editBookTitle">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="editBookAuthor">Autor: </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="editBookAuthor" id="editBookAuthor">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    <input type="submit" class="btn btn-primary" value="Edytuj książkę">
+                    <input id="editBookId" name="editBookId" type="hidden">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
