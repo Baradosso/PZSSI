@@ -1,10 +1,11 @@
 {
   "name": "pzssi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Programowanie zdarzeniowe skalowanych systemów internetowych Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +15,13 @@
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
-    "graphql": "^15.3.0",
-    "mongoose": "^7.0.2",
+    "graphql": "^15.8.0",
+    "jquery": "^3.6.4",
+    "mongoose": "^7.0.4",
     "swagger-autogen": "^2.23.1",
-    "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^4.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

@@ -1,5 +1,3 @@
-import '../bootstrap/dist/js/bootstrap.js'
-
 const tableAnchors = document.getElementsByClassName('edit-book-btn');
 
 for (const anchor of tableAnchors) {
