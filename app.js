@@ -23,6 +23,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 mongo.dbOn();
 require('./routes')(app);
 require('./restRoutes')(app);
+require('./graphql')(app);
 
 const server = http.createServer(app);
 const port = 8000;

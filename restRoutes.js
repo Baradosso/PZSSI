@@ -1,4 +1,4 @@
-const books = require('./books');
+const booksModel = require('./booksModel');
 const bodyParser = require('body-parser');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false});
 
@@ -6,7 +6,7 @@ module.exports = function(app) {
 
     app.post('/create/', urlEncodedParser, async function(req, res) {
         try {
-            var book = new books.BookModel({title: req.body.title, 
+            var book = new booksModel.BookModel({title: req.body.title, 
                                                 author: req.body.author
                                             });
 
@@ -19,7 +19,7 @@ module.exports = function(app) {
     
     app.delete('/delete/:id', urlEncodedParser, async function(req, res) {
         try {
-            await books.BookModel.findByIdAndDelete(req.params.id);
+            await booksModel.BookModel.findByIdAndDelete(req.params.id);
             return res.sendStatus(200);
         } catch {
             return res.sendStatus(400);
@@ -29,7 +29,7 @@ module.exports = function(app) {
     app.put('/update/:id', urlEncodedParser, async function(req, res) {
         try {
             var book = { title: req.body.title, author: req.body.author };
-            await books.BookModel.findByIdAndUpdate(req.params.id, book);
+            await booksModel.BookModel.findByIdAndUpdate(req.params.id, book);
             return res.sendStatus(200);
         } catch (error) {
             return res.sendStatus(400);
@@ -38,8 +38,8 @@ module.exports = function(app) {
     
     app.get('/get/', urlEncodedParser, async function(_req, res) {
         try {
-            var books = await books.BookModel.find();
-            const jsonContent = JSON.stringify(books);
+            var books = await booksModel.BookModel.find();
+            var jsonContent = JSON.stringify(books);
             res.status(200);
             return res.send(jsonContent);
         } catch (error) {
@@ -49,8 +49,8 @@ module.exports = function(app) {
     
     app.get('/get/:author', urlEncodedParser, async function(req, res) {
         try {
-            var books = await books.BookModel.find({author: req.params.author});
-            const jsonContent = JSON.stringify(books);
+            var books = await booksModel.BookModel.find({author: req.params.author});
+            var jsonContent = JSON.stringify(books);
             res.status(200);
             return res.send(jsonContent);
         } catch (error) {
