@@ -1,0 +1,73 @@
+<%- include('./shared/header.ejs') %>
+
+<h1 class="display-4">Autorzy</h1>
+ 
+<button id="addAuthorButton" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postAuthorModalTarget" style="margin-bottom: 10px;">
+    Dodaj autora
+</button>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-responsive">
+        <thead class="thead-dark">
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% viewAuthors.forEach(function(author) { %>
+                <tr>
+                    <td><%= author.name %></td>
+                    <td><%= author.surname %></td>
+                    <td>
+                        <form action="/authors/delete/<%= author._id %>" method="post">
+                            <input id="name<%= author._id %>" type="hidden" value="<%= author.name %>">
+                            <input id="surname<%= author._id %>" type="hidden" value="<%= author.surname %>">
+                            <button type="button" class="editAuthorButton btn btn-primary" data-bs-toggle="modal" data-bs-target="#postAuthorModalTarget" value="<%= author._id %>">
+                                Edytuj
+                            </button>
+                            <input class="btn btn-danger" type="submit" value="Usuń">
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('./shared/footer.ejs') %>
+
+<!-- Modal button  -->
+<div class="modal fade" id="postAuthorModalTarget" tabindex="-1" role="dialog" aria-labelledby="postAuthorModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="post" id="postAuthorForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="postAuthorModalTitle" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row" style="margin-bottom: 10px;">
+                        <label class="col-sm-3 col-form-label" for="postAuthorName">Imię:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="postAuthorName" id="postAuthorName" placeholder="Imię..." >
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom: 10px;">
+                        <label class="col-sm-3 col-form-label" for="postAuthorSurname">Nazwisko:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="postAuthorSurname" id="postAuthorSurname" placeholder="Nazwisko..." >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                        <input id="postAuthorSubmit" type="submit" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module" src="./js/authorsOperations.js"></script>

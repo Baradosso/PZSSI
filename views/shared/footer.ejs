@@ -1,10 +1,16 @@
             </main>
         </div>
 
-        <footer class="border-top footer text-muted">
+        <footer class="border-top footer text-muted fixed-bottom">
             <div class="container">
                 &copy; 2023 - MHWWebApp - <a>Privacy</a>
             </div>
         </footer>
     </body>
+    <!-- Modal message -->
+    <div class="container">
+        <div id="liveAlertPlaceholder"></div>
+        <input type="hidden" value="<%= statusCode %>" id="statusCode">
+        <input type="hidden" value="<%= operationType %>" id="operationType">
+    </div>
 </html>
