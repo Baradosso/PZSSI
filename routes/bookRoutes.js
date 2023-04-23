@@ -1,88 +1,92 @@
 const bodyParser = require('body-parser');
-const BookModel = require('../models/Book'); 
-const AuthorModel = require('../models/Author'); 
+const Book = require('../models/Book'); 
+const Author = require('../models/Author'); 
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 
-function getLink(statusCode, operationType) {
-    return `..?statusCode=${statusCode}&operationType=${operationType}`
+async function reloadData(res) {
+    try {
+        const books = await Book.find().sort({ title: 1 }).populate('author');
+        const authors = await Author.find().sort({ name: 1 });
+        return res.json({ 
+            books: books,
+            authors: authors
+        });
+    } catch {
+        return res.json({ 
+            books: [],
+            authors: [],
+            statusCode: 400
+        });
+    }
 }
 
 module.exports = function(app) {
 
-    app.get('/books/', async function(req, res) {
-        const statusCode = req.query.statusCode;
-        try {
-            const books = await BookModel.find().sort({ title: 1 }).populate('author');
-            const authors = await AuthorModel.find().sort({ name: 1 });
-            return res.render('books', { 
-                viewBooks: books, 
-                viewAuthors: authors,
-                statusCode: statusCode,
-                operationType: req.query.operationType 
-            });
-        } catch {
-            return res.render('books', { 
-                viewBooks: [], 
-                viewAuthors: [],
-                statusCode: 500,
-                operationType: 'get'
-            });
-        }
+    app.get('/books/', async function(_req, res) {
+        return res.render('books');
+    }),
+
+    app.get('/books/fetch/', async function(_req, res) {
+        return reloadData(res);
     }),
     
     app.post('/books/create/', urlEncodedParser, async function(req, res) {
         var statusCode;
-
         try {
-            if (!await AuthorModel.findById(req.body.postBookAuthor)) {
-                throw new Error(`No author exists with id: ${req.body.postBookAuthor}`);
+            if (!await Author.findById(req.body.author)) {
+                throw new Error(`No author exists with id: ${req.body.author}`);
             }
 
-            await new BookModel({ 
-                title: req.body.postBookTitle, 
-                author: req.body.postBookAuthor 
+            await new Book({ 
+                title: req.body.title, 
+                author: req.body.author 
             }).save();
 
-            statusCode = 200;
+            statusCode = 201;
         } catch {
-            statusCode = 400;
+            statusCode = 401;
         } finally {
-            return res.redirect(getLink(statusCode, 'create'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     }),
     
-    app.post('/books/delete/:id', urlEncodedParser, async function(req, res) {
+    app.delete('/books/delete/:id', urlEncodedParser, async function(req, res) {
         var statusCode;
-
         try {
-            if (!await BookModel.findById(req.params.id)) {
+            if (!await Book.findById(req.params.id)) {
                 throw new Error(`No book exists with id: ${req.params.id}`);
             }
 
-            await BookModel.findByIdAndDelete(req.params.id);
-            statusCode = 200;
+            await Book.findByIdAndDelete(req.params.id);
+
+            statusCode = 202;
         } catch {
-            statusCode = 400;
+            statusCode = 402;
         } finally {
-            return res.redirect(getLink(statusCode, 'delete'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     }),
     
-    app.post('/books/update/:id', urlEncodedParser, async function(req, res) {
+    app.put('/books/update/:id', urlEncodedParser, async function(req, res) {
         var statusCode;
-
         try {
-            if (!await BookModel.findById(req.params.id)) {
+            if (!await Book.findById(req.params.id)) {
                 throw new Error(`No book exists with id: ${req.params.id}`);
             }
 
-            const book = { title: req.body.postBookTitle, author: req.body.postBookAuthor };
-            await BookModel.findByIdAndUpdate(req.params.id, book);
-            statusCode = 200;
+            const book = { title: req.body.title, author: req.body.author };
+            await Book.findByIdAndUpdate(req.params.id, book);
+            statusCode = 203;
         } catch {
-            statusCode = 400;
+            statusCode = 403;
         } finally {
-            return res.redirect(getLink(statusCode, 'update'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     });
 }

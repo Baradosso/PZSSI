@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 
 app.use('/bootstrap-css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/bootstrap-js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
-app.use('/bootstrap-js', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 
 app.use('/resources', express.static(__dirname + '/public/resources'));
 app.use('/css', express.static(__dirname + '/public/css'));

@@ -1,83 +1,88 @@
 const bodyParser = require('body-parser');
-const AuthorModel = require('../models/Author'); 
+const Author = require('../models/Author'); 
 const Book = require('../models/Book');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 
-function getLink(statusCode, operationType) {
-    return `..?statusCode=${statusCode}&operationType=${operationType}`
+async function reloadData(res) {
+    try {
+        const authors = await Author.find().sort({ title: 1 });
+        return res.json({ 
+            authors: authors,
+        });
+    } catch {
+        return res.json({ 
+            authors: [],
+            statusCode: 400
+        });
+    }
 }
 
 module.exports = function(app) {
 
-    app.get('/authors/', async function(req, res) {
-        const statusCode = req.query.statusCode;
-        try {
-            const authors = await AuthorModel.find().sort({ title: 1 });
-            return res.render('authors', { 
-                viewAuthors: authors,
-                statusCode: statusCode,
-                operationType: req.query.operationType 
-            });
-        } catch {
-            return res.render('authors', { 
-                viewAuthors: [],
-                statusCode: 500,
-                operationType: 'get'
-            });
-        }
+    app.get('/authors/', async function(_req, res) {
+        return res.render('authors');
     }),
-    
+
+    app.get('/authors/fetch/', async function(_req, res) {
+        return reloadData(res);
+    }),
+
     app.post('/authors/create/', urlEncodedParser, async function(req, res) {
         var statusCode;
-
         try {
-            await new AuthorModel({ 
-                name: req.body.postAuthorName, 
-                surname: req.body.postAuthorSurname 
+            await new Author({ 
+                name: req.body.name, 
+                surname: req.body.surname 
             }).save();
 
-            statusCode = 200;
+            statusCode = 201;
         } catch {
-            statusCode = 400;
+            statusCode = 401;
         } finally {
-            return res.redirect(getLink(statusCode, 'create'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     }),
     
-    app.post('/authors/delete/:id', urlEncodedParser, async function(req, res) {
+    app.delete('/authors/delete/:id', urlEncodedParser, async function(req, res) {
         var statusCode;
-
         try {
-            const author = await AuthorModel.findById(req.params.id);
+            const author = await Author.findById(req.params.id);
             if (!author) {
                 throw new Error(`No author exists with id: ${req.params.id}`);
             }
 
             await Book.deleteMany({ author: author._id });
-            await AuthorModel.findByIdAndDelete(req.params.id);
-            statusCode = 200;
+            await Author.findByIdAndDelete(req.params.id);
+
+            statusCode = 202;
         } catch {
-            statusCode = 400;
+            statusCode = 402;
         } finally {
-            return res.redirect(getLink(statusCode, 'delete'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     }),
-    
-    app.post('/authors/update/:id', urlEncodedParser, async function(req, res) {
-        var statusCode;
 
+    app.put('/authors/update/:id', urlEncodedParser, async function(req, res) {
+        var statusCode;
         try {
-            if (!await AuthorModel.findById(req.params.id)) {
+            if (!await Author.findById(req.params.id)) {
                 throw new Error(`No author exists with id: ${req.params.id}`);
             }
 
-            const author = { name: req.body.postAuthorName, surname: req.body.postAuthorSurname };
-            await AuthorModel.findByIdAndUpdate(req.params.id, author);
-            statusCode = 200;
+            const author = { name: req.body.name, surname: req.body.surname };
+            await Author.findByIdAndUpdate(req.params.id, author);
+
+            statusCode = 203;
         } catch {
-            statusCode = 400;
+            statusCode = 403;
         } finally {
-            return res.redirect(getLink(statusCode, 'update'));
+            return res.json({ 
+                statusCode: statusCode
+            });
         }
     });
 }
