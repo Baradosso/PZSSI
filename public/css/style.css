@@ -1,0 +1,9 @@
+#liveAlertPlaceholder {
+    position: fixed;
+    bottom: 2em;
+    right: 4em;
+}
+
+.table-responsive {
+    max-height: 40em;
+}

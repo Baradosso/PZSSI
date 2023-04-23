@@ -21,9 +21,18 @@ app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 mongo.dbOn();
-require('./routes')(app);
-require('./restRoutes')(app);
-require('./graphql')(app);
+require('./routes/authorRoutes')(app);
+require('./routes/bookRoutes')(app);
+require('./routes/restRoutes')(app);
+require('./routes/graphqlRoutes')(app);
+
+app.get('/', async function(req, res) {
+    const statusCode = req.query.statusCode;
+    return res.render('index', { 
+        statusCode: statusCode,
+        operationType: req.query.operationType 
+    });
+});
 
 const server = http.createServer(app);
 const port = 8000;

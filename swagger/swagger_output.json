@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/create/": {
+    "/mhwwbooks/create/": {
       "post": {
         "description": "",
         "parameters": [
@@ -21,10 +21,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": {
+                "author": {
                   "example": "any"
                 },
-                "author": {
+                "title": {
                   "example": "any"
                 }
               }
@@ -41,7 +41,7 @@
         }
       }
     },
-    "/delete/{id}": {
+    "/mhwwbooks/delete/{id}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -62,7 +62,7 @@
         }
       }
     },
-    "/update/{id}": {
+    "/mhwwbooks/update/{id}": {
       "put": {
         "description": "",
         "parameters": [
@@ -98,7 +98,7 @@
         }
       }
     },
-    "/get/": {
+    "/mhwwbooks/get/": {
       "get": {
         "description": "",
         "parameters": [],
@@ -106,13 +106,34 @@
           "200": {
             "description": "OK"
           },
-          "418": {
-            "description": "I'm a teapot"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
     },
-    "/get/{author}": {
+    "/mhwwbooks/get/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwbooks/get/{author}": {
       "get": {
         "description": "",
         "parameters": [
@@ -127,8 +148,151 @@
           "200": {
             "description": "OK"
           },
-          "418": {
-            "description": "I'm a teapot"
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/create/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "surname": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/delete/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "surname": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/get/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/get/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mhwwauthor/get/{book}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "book",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
