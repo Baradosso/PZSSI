@@ -4,6 +4,13 @@
 ### Swagger-UI API _[localhost:8000/api-docs](localhost:8000/api-docs)_ 
 ### Graphql API _[localhost:8000/graphql](localhost:8000/graphql)_
 
+After downloading project instal Node packages:
+```
+npm install
+```
+
+Project runs on port _8000_ 
+
 ## Author Graphql commends: 
 
 - create author:
