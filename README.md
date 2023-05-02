@@ -1,15 +1,15 @@
 # PZSSI
 # Programowanie zdarzeniowe skalowanych systemów internetowych Node.js
 
-### Swagger-UI API _[localhost:8000/api-docs](localhost:8000/api-docs)_ 
-### Graphql API _[localhost:8000/graphql](localhost:8000/graphql)_
-
 After downloading project instal Node packages:
 ```
 npm install
 ```
 
 Project runs on port _8000_ 
+
+### Swagger-UI API _[localhost:8000/api-docs](localhost:8000/api-docs)_ 
+### Graphql API _[localhost:8000/graphql](localhost:8000/graphql)_
 
 ## Author Graphql commends: 
 
